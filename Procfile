@@ -1,1 +1,1 @@
-web: gunicorn trendel.wsgi
+web: gunicorn trendel_app.wsgi
