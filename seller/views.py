@@ -15,11 +15,6 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
-@api_view(['GET'])
-def test(request):
-	return Response('Message from trendel.')
-
-	
 @api_view(['GET', 'POST'])
 def create_seller(request, user_token):
 	shop_name = request.data.get('shop_name')
@@ -152,6 +147,7 @@ def set_coupon_to_product(request, product_id, coupon_id):
 @api_view(['GET', 'POST'])
 def create_product(request, user_token, category_id):
 	product_name = request.data.get('product_name')
+	product_primary_image = request.FILES.get('product_primary_image')
 	product_image = request.FILES.get('product_image')
 	price = request.data.get('price')
 	offer_price = request.data.get('offer_price')
@@ -171,6 +167,7 @@ def create_product(request, user_token, category_id):
 	image.save()
 	product = product_category.product_set.create(
 		product_name=product_name,
+		product_primary_image=product_primary_image,
 		price=price,
 		offer_price=offer_price,
 		material_type=material_type,
@@ -263,14 +260,6 @@ def add_product_image(request, product_id):
 		return Response(True)
 	except:
 		return Response(False)
-
-
-@api_view(['GET', 'POST'])
-def get_product_primary_image(request, product_id):
-	product = Product.objects.filter(id=product_id).first()
-	product_primary_image = product.product_image.first()
-	serializer = ImageSerializer(product_primary_image)
-	return Response(serializer.data)
 
 
 @api_view(['GET', 'POST'])

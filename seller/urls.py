@@ -3,8 +3,6 @@ from . import views
 
 # Create your urls here.
 urlpatterns = [
-    path('test/', views.test),
-    
     path('create-seller/<user_token>/', views.create_seller),
     path('update-seller/<user_token>/', views.update_seller),
     path('get-seller/<user_token>/', views.get_seller),
@@ -32,6 +30,5 @@ urlpatterns = [
     path('delete-product-size/<product_size_id>/', views.delete_product_size),
 
     path('add-product-image/<product_id>/', views.add_product_image),
-    path('get-product-primary-image/<product_id>/', views.get_product_primary_image),
     path('delete-product-image/<product_image_id>/', views.delete_product_image),
 ]
