@@ -27,20 +27,11 @@ class Seller(models.Model):
         ordering = ['-seller_registered_at']
 
 
-class Subcategory(models.Model):
-    category_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    category_image = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
-    category_image_2 = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
-
-    def __str__(self):
-        return f'{self.category_name}'
-
-
 class Category(models.Model):
     category_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
     category_image = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
     category_image_2 = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
-    sub_categories = models.ManyToManyField(Subcategory)
+    sub_categories = models.ManyToManyField('Category', null=True, blank=True)
 
     def __str__(self):
         return f'{self.id} - {self.category_name}'
