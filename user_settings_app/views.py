@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 def get_user(request, user_token):
 	token = Token.objects.filter(key=user_token).first()
 	user = token.user
-	serializer = UserSerializer()
+	serializer = UserSerializer(user)
 	return Response(serializer.data)
 
 	
