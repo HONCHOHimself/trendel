@@ -27,11 +27,20 @@ class Seller(models.Model):
         ordering = ['-seller_registered_at']
 
 
+class SubCategory(models.Model):
+    category_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    category_image = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
+    category_image_2 = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.id} - {self.category_name}'
+
+
 class Category(models.Model):
     category_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
     category_image = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
     category_image_2 = models.ImageField(validators=[validate_image_file_extension], null=True, blank=True)
-    sub_categories = models.ManyToManyField('Category', null=True, blank=True)
+    sub_categories = models.ManyToManyField(SubCategory)
 
     def __str__(self):
         return f'{self.id} - {self.category_name}'
@@ -67,14 +76,14 @@ class Size(models.Model):
 
 
 class Image(models.Model):
-    product_image = models.ImageField(upload_to='product_images', validators=[validate_image_file_extension])
+    product_image = models.ImageField(upload_to='product_images', validators=[validate_image_file_extension], null=True, blank=True)
 
 
 class Product(models.Model):
     product_name = models.CharField(max_length=60)
-    product_category = models.ManyToManyField(Category)
+    product_category = models.ManyToManyField(SubCategory, null=True, blank=True)
     product_primary_image = models.ImageField(upload_to='product_image', validators=[validate_image_file_extension], null=True, blank=True)
-    product_images = models.ManyToManyField(Image)
+    product_images = models.ManyToManyField(Image, null=True, blank=True)
     price = models.FloatField()
     offer_price = models.FloatField(null=True, blank=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True, blank=True)

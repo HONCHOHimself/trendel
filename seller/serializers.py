@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Seller, Category, Coupon, Product, Size, Image
+from .models import Seller, Category, Coupon, Product, Size, Image, SubCategory
 
 # Create your serializers here.
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'date_joined']
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'date_joined']
         
 class SellerSerializer(serializers.ModelSerializer):
     seller_user = UserSerializer()
@@ -15,13 +15,13 @@ class SellerSerializer(serializers.ModelSerializer):
         fields = ['id', 'shop_name', 'seller_name', 'seller_user', 'shop_is_registered', 'seller_ID_method',\
                     'seller_ID', 'shop_address', 'phone_no', 'seller_registered_at']
 
-class DemoCategorySerializer(serializers.ModelSerializer):
+class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'category_name', 'category_image', 'category_image_2']
 
 class CategorySerializer(serializers.ModelSerializer):
-    sub_categories = DemoCategorySerializer(many=True)
+    sub_categories = SubCategorySerializer(many=True)
     class Meta:
         model = Category
         fields = ['id', 'category_name', 'category_image', 'category_image_2', 'sub_categories']

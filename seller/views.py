@@ -4,9 +4,9 @@ from django.utils import timezone
 # Models & Serializers
 from customer.models import Order, GiftProduct, ProductReview
 from customer.serializers import OrderSerializer, GiftProductSerializer, ProductReviewSerializer
-from .models import Seller, Category, Coupon, Product, Size, Image
+from .models import Seller, Category, Coupon, Product, Size, Image, SubCategory
 from .serializers import UserSerializer, SellerSerializer, CategorySerializer, CouponSerializer, ProductSerializer,\
-							SizeSerializer, ImageSerializer
+							SizeSerializer, ImageSerializer, SubCategorySerializer
 
 # Rest Framework
 from rest_framework import generics
@@ -64,17 +64,6 @@ def get_seller(request, user_token):
 	return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
-def create_category(request):
-	category_name = request.data.get('category_name')
-	category_image = request.FILES.get('category_image')
-	category_image_2 = request.FILES.get('category_image_2')
-	category = Category(category_name=category_name, category_image=category_image,\
-						category_image_2=category_image_2)
-	category.save()
-	return Response(True)
-
-
 @api_view(['GET'])
 def get_category(request, category_id):
 	category = Category.objects.filter(id=category_id).first()
@@ -83,9 +72,23 @@ def get_category(request, category_id):
 
 
 @api_view(['GET'])
+def get_sub_category(request, sub_category_id):
+	sub_category = Category.objects.filter(id=sub_category_id).first()
+	serializer = SubCategorySerializer(sub_category)
+	return Response(serializer.data)
+
+
+@api_view(['GET'])
 def get_categories(request):
 	categories = Category.objects.all()
 	serializer = CategorySerializer(categories, many=True)
+	return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_sub_categories(request, category_id):
+	sub_categories = SubCategory.objects.filter().all()
+	serializer = SubCategorySerializer(sub_categories, many=True)
 	return Response(serializer.data)
 
 
@@ -145,10 +148,10 @@ def set_coupon_to_product(request, product_id, coupon_id):
 
 
 @api_view(['GET', 'POST'])
-def create_product(request, user_token, category_id):
+def create_product(request, user_token, sub_category_id):
 	product_name = request.data.get('product_name')
 	product_primary_image = request.FILES.get('product_primary_image')
-	product_image = request.FILES.get('product_image')
+	# product_image = request.FILES.get('product_image')
 	price = request.data.get('price')
 	offer_price = request.data.get('offer_price')
 	material_type = request.data.get('material_type')
@@ -162,9 +165,9 @@ def create_product(request, user_token, category_id):
 	user = token.user
 	seller = Seller.objects.filter(seller_user=user).first()
 	product_published_at = timezone.now()
-	product_category = Category.objects.filter(id=category_id).first()
-	image = Image(product_image=product_image)
-	image.save()
+	product_category = SubCategory.objects.filter(id=sub_category_id).first()
+	# image = Image(product_image=product_image)
+	# image.save()
 	product = product_category.product_set.create(
 		product_name=product_name,
 		product_primary_image=product_primary_image,
@@ -178,7 +181,7 @@ def create_product(request, user_token, category_id):
 		quantity=quantity,
 		product_seller=seller,
 		product_published_at=product_published_at)
-	image.product_set.add(product)
+	# image.product_set.add(product)
 	return Response(True)
 
 
@@ -190,8 +193,8 @@ def get_products(request):
 
 
 @api_view(['GET'])
-def get_products_by_category(request, category_id):
-	category = Category.objects.filter(id=category_id).first()
+def get_products_by_category(request, sub_category_id):
+	category = SubCategory.objects.filter(id=sub_category_id).first()
 	products = Product.objects.filter(product_category=category).all()
 	serializer = ProductSerializer(products, many=True)
 	return Response(serializer.data)
