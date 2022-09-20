@@ -2,12 +2,22 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from .serializers import UserSerializer
+
 # Rest Framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
+@api_view(['GET'])
+def get_user(request, user_token):
+	token = Token.objects.filter(key=user_token).first()
+	user = token.user
+	serializer = UserSerializer()
+	return Response(serializer.data)
+
+	
 @api_view(['GET', 'POST'])
 def change_password(request, user_token):
 

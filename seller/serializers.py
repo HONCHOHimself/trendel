@@ -6,7 +6,7 @@ from .models import Seller, Category, Coupon, Product, Size, Image
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'date_joined']
         
 class SellerSerializer(serializers.ModelSerializer):
     seller_user = UserSerializer()

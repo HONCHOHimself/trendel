@@ -5,7 +5,7 @@ from django.utils import timezone
 from customer.models import Order, GiftProduct, ProductReview
 from customer.serializers import OrderSerializer, GiftProductSerializer, ProductReviewSerializer
 from .models import Seller, Category, Coupon, Product, Size, Image
-from .serializers import SellerSerializer, CategorySerializer, CouponSerializer, ProductSerializer,\
+from .serializers import UserSerializer, SellerSerializer, CategorySerializer, CouponSerializer, ProductSerializer,\
 							SizeSerializer, ImageSerializer
 
 # Rest Framework
