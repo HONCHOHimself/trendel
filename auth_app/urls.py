@@ -4,14 +4,10 @@ from . import views
 # Create your urls here.
 urlpatterns = [
     path('login/', views.login_view),
-    """
-        username
-        password
-    """
+        # username
+        # password
     path('register/', views.register_view),
-    """
-        username
-        email
-        password
-    """
+        # username
+        # email
+        # password
 ]
