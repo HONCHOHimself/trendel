@@ -9,6 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
         
 class SellerSerializer(serializers.ModelSerializer):
+    seller_user = UserSerializer()
     class Meta:
         model = Seller
         fields = ['id', 'shop_name', 'seller_name', 'seller_user', 'shop_is_registered', 'seller_ID_method',\
