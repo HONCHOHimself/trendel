@@ -29,7 +29,7 @@ SECRET_KEY = 'uSFOBmpULiv9Qj5GwW-NRdQyThTahg5BnVUSUcyx2aoseUIsAbeD6bBEyUuKJPJF1e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['trendeltest.herokuapp.com']
+ALLOWED_HOSTS = ['trendeltest.herokuapp.com', 'trendel.herokuapp.com']
 
 
 # Application definition
